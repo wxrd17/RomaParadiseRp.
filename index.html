@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roma Paradise | Full RP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gold: #d4af37;
+            --primary-red: #8b0000;
+            --bg-dark: #0f0f0f;
+            --text-light: #f0f0f0;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--primary-red); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-gold); }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Nav & Hamburger Menu */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        nav .logo-text {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--primary-gold);
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0,0,0,0.8);
+        }
+
+        .hamburger {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 101;
+        }
+        .hamburger span {
+            display: block;
+            width: 35px;
+            height: 3px;
+            background-color: var(--primary-gold);
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 0 5px rgba(0,0,0,0.8);
+        }
+
+        /* Overlay Menu */
+        .overlay-menu {
+            position: fixed;
+            top: 0;
+            left: 100%;
+            width: 100%;
+            height: 100vh;
+            background: rgba(10, 10, 10, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: left 0.4s ease-in-out;
+            z-index: 100;
+        }
+        .overlay-menu.active {
+            left: 0;
+        }
+        .overlay-menu ul {
+            list-style: none;
+            text-align: center;
+        }
+        .overlay-menu ul li {
+            margin: 25px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s, transform 0.4s;
+        }
+        .overlay-menu.active ul li {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .overlay-menu ul li:nth-child(1) { transition-delay: 0.1s; }
+        .overlay-menu ul li:nth-child(2) { transition-delay: 0.2s; }
+        .overlay-menu ul li:nth-child(3) { transition-delay: 0.3s; }
+        .overlay-menu ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 2rem;
+            font-family: 'Cinzel', serif;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        .overlay-menu ul li a:hover {
+            color: var(--primary-red);
+            text-shadow: 0 0 15px rgba(139, 0, 0, 0.8);
+        }
+
+        /* Background & Hero Animations */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bg-animation {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
+            animation: kenburns 25s infinite alternate linear;
+            z-index: -2;
+        }
+        .bg-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(45deg, rgba(15,15,15,0.95), rgba(139,0,0,0.3), rgba(15,15,15,0.95));
+            background-size: 400% 400%;
+            animation: gradientShift 12s infinite ease-in-out;
+            z-index: -1;
+        }
+
+        @keyframes kenburns {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.2); }
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Hero Content */
+        .hero-content {
+            z-index: 1;
+        }
+        .hero-logo {
+            width: 280px;
+            margin-bottom: 20px;
+            animation: float 4s ease-in-out infinite;
+            filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.8));
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 5.5rem;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #d4af37, #fff8dc, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2.5s ease-in-out infinite alternate;
+            margin-bottom: 5px;
+        }
+        h2.subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 2.2rem;
+            color: var(--primary-red);
+            letter-spacing: 8px;
+            text-shadow: 0 0 15px rgba(139, 0, 0, 0.9);
+            animation: pulse 2s infinite;
+        }
+        
+        /* Discord Icon Styling */
+        .discord-link {
+            margin-top: 20px;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        .discord-link:hover {
+            transform: scale(1.15) rotate(5deg);
+        }
+        .discord-icon {
+            width: 60px;
+            height: 60px;
+            fill: white;
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(212, 175, 55, 0.1); }
+            to { text-shadow: 0 0 25px rgba(212, 175, 55, 0.5), 0 0 40px rgba(212, 175, 55, 0.3); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.03); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 10%;
+            max-width: 1200px;
+            margin: auto;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.8rem;
+            color: var(--primary-gold);
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title::after {
+            content: '';
+            width: 60%;
+            height: 3px;
+            background: var(--primary-red);
+            position: absolute;
+            bottom: -10px;
+            left: 20%;
+            border-radius: 2px;
+        }
+        
+        .trama-box {
+            background: rgba(25, 25, 25, 0.5);
+            padding: 50px;
+            border-radius: 12px;
+            border-left: 6px solid var(--primary-gold);
+            line-height: 1.9;
+            font-size: 1.15rem;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .trama-box strong {
+            color: var(--primary-gold);
+            font-size: 1.3rem;
+        }
+
+        /* Modal Aiuto Background */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.4s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: #121212;
+            width: 90%;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 50px;
+            border-radius: 12px;
+            border-top: 4px solid var(--primary-red);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            position: relative;
+            transform: scale(0.8);
+            transition: 0.4s ease;
+        }
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 2.5rem;
+            color: var(--primary-gold);
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: sans-serif;
+            line-height: 1;
+        }
+        .close-btn:hover {
+            color: var(--primary-red);
+            transform: scale(1.1);
+        }
+        .modal-content h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--primary-gold);
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+        }
+        .modal-content h3 {
+            color: var(--primary-red);
+            margin: 25px 0 15px 0;
+            font-size: 1.4rem;
+        }
+        .modal-content p, .modal-content li {
+            line-height: 1.8;
+            color: #ddd;
+            margin-bottom: 15px;
+        }
+        .modal-content ul { padding-left: 20px; }
+        .warning { color: #ff4c4c; font-weight: bold; background: rgba(255,76,76,0.1); padding: 2px 6px; border-radius: 4px; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #050505;
+            border-top: 1px solid #222;
+        }
+        .credits {
+            color: #666;
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 2px;
+        }
+        .credits span {
+            color: var(--primary-gold);
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            h1 { font-size: 3.5rem; }
+            h2.subtitle { font-size: 1.5rem; }
+            nav { padding: 15px 30px; }
+            section { padding: 60px 5%; }
+            .modal-content { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <div class="logo-text">RP</div>
+        <div class="hamburger" onclick="toggleMenu()" id="hamburgerIcon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Menu a comparsa (Hamburger) -->
+    <div class="overlay-menu" id="overlayMenu">
+        <ul>
+            <li><a href="#trama" onclick="toggleMenu()">La Storia</a></li>
+            <li><a onclick="openModal(); toggleMenu()">Aiuto Background</a></li>
+            <li><a href="https://docs.google.com/document/d/1-pkMPCcsw_8pM2Zph2RBXgQL2-Z-GW_2aYJtgIeTIRw/mobilebasic" target="_blank" onclick="toggleMenu()">Regolamento</a></li>
+        </ul>
+    </div>
+
+    <!-- Modale Aiuto Background -->
+    <div class="modal-overlay" id="wlModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>Aiuto Background</h2>
+            
+            <h3>Introduzione Modulo WL</h3>
+            <p>Il modulo WL è un campo obbligatorio da compilare, che servirà allo staff per valutarti. A te, invece, servirà per creare la storia del tuo personaggio che dovrai rispettare rigorosamente in RP.</p>
+            <p>Noi dello staff consigliamo di usare un <strong>PG di provenienza italiana</strong>, poiché riteniamo che per far sì che l’esperienza del roleplay sia vantaggiosa e reale, i PG con provenienza estera abbiano bisogno di un visto o permesso di soggiorno (potrai accordarti in vocale whitelist per come ottenerli).</p>
+            <p>In caso voi scegliate di utilizzare un PG di provenienza estera, è <strong>obbligatorio</strong> scrivere le motivazioni per le quali è arrivato a Roma.</p>
+
+            <h3>Requisiti Ufficiali</h3>
+            <ul>
+                <li><strong>Informazioni Base:</strong> Nome, cognome, età e provenienza del tuo personaggio (PG).</li>
+                <li><strong>Famiglia:</strong> Almeno una descrizione breve di un genitore (del PG) con annesso carattere del genitore.</li>
+                <li><strong>Psicologia:</strong> Descrivere le sue paure e i suoi obiettivi principali.</li>
+                <li><strong>Indole:</strong> Descrivere il suo carattere (es: spavaldo, introverso, calcolatore).</li>
+                <li><strong>Debolezze:</strong> Mettere vari vizi del PG (es: vizio del fumo). <br><span class="warning">⚠️ Almeno uno, anche banale o piccolo, è obbligatorio.</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <header id="home">
+        <div class="bg-animation"></div>
+        <div class="bg-overlay"></div>
+        
+        <div class="hero-content">
+            <!-- Immagine Logo Aggiornata -->
+            <img src="IMG_7192.gif" alt="Logo Roma Paradise" class="hero-logo">
+            
+            <h1>ROMA PARADISE</h1>
+            <h2 class="subtitle">FULL RP</h2>
+            
+            <!-- Icona Discord Cliccabile -->
+            <a href="https://discord.gg/urENBb6ek5" target="_blank" class="discord-link">
+                <svg viewBox="0 0 24 24" class="discord-icon">
+                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.1 18.099a.082.082 0 0 0 .031.058c1.39 1.025 2.744 1.64 4.07 2.052a.07.07 0 0 0 .078-.039c.456-1.042.87-2.128 1.144-3.238a.07.07 0 0 0-.038-.084c-.392-.147-.775-.31-1.15-.49a.07.07 0 0 1-.007-.116c.075-.056.15-.113.224-.171a.068.068 0 0 1 .075-.008c3.55 1.63 7.39 1.63 10.89 0a.068.068 0 0 1 .075.008c.074.058.15.115.225.171a.07.07 0 0 1-.007.116c-.375.18-.758.343-1.15.49a.07.07 0 0 0-.038.084c.274 1.11.688 2.196 1.144 3.238a.07.07 0 0 0 .078.039c1.326-.412 2.68-1.027 4.07-2.052a.07.07 0 0 0 .031-.058c.48-5.068-.373-9.602-3.573-14.279a.073.073 0 0 0-.032-.027ZM8.02 15.332c-1.18 0-2.155-1.085-2.155-2.419 0-1.333.955-2.418 2.155-2.418 1.21 0 2.176 1.095 2.155 2.418 0 1.334-.945 2.419-2.155 2.419Zm7.975 0c-1.18 0-2.155-1.085-2.155-2.419 0-1.333.955-2.418 2.155-2.418 1.21 0 2.176 1.095 2.155 2.418 0 1.334-.945 2.419-2.155 2.419Z"/>
+                </svg>
+            </a>
+        </div>
+    </header>
+
+    <!-- Unica sezione visibile nella pagina principale -->
+    <section id="trama">
+        <div style="text-align: center;">
+            <h2 class="section-title">L'Impero della Strada</h2>
+        </div>
+        <div class="trama-box">
+            <p><strong>Roma. La Città Eterna.</strong> Sotto l'ombra dei fori imperiali e tra i vicoli più oscuri delle periferie, si cela un mondo fatto di potere, alleanze e tradimenti. Qui il sangue di vecchie dinastie criminali si mischia con le ambizioni di chi cerca di scalare la vetta partendo dal nulla.</p><br>
+            <p>In questa città non sei nessuno finché non dimostri quanto vali. Che tu scelga di far rispettare la legge o di dominarla nell'ombra per il controllo delle piazze, ogni tua azione plasmerà il destino della capitale. Fai la tua scelta, onora il tuo passato, scrivi la tua storia e conquista Roma Paradise.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p class="credits">Crediti: <span>wxrdgosturdy</span></p>
+    </footer>
+
+    <!-- Script JS -->
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('overlayMenu');
+            const hamburger = document.getElementById('hamburgerIcon');
+            
+            menu.classList.toggle('active');
+            
+            const spans = hamburger.getElementsByTagName('span');
+            if (menu.classList.contains('active')) {
+                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(7px, -8px)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
+        }
+
+        function openModal() {
+            document.getElementById('wlModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('wlModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('wlModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
